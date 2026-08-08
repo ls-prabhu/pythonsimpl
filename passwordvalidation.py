@@ -8,7 +8,7 @@ root.title("Password Validation")
 
 password = tk.StringVar()
 
-passentry = ttk.Entry(root, textvariable=password, justify="center", show="*")
+passentry = ttk.Entry(root, textvariable=password, justify="center", show="*",name="enter password")
 passentry.pack(pady=10)
 
 resultlbl = tk.StringVar()
@@ -16,6 +16,7 @@ resultlbl = tk.StringVar()
 
 def validation(userpass):
     errors = []
+    allowedSpecialChar = ["@","%","#","!","^","&"]
 
     if len(userpass) < 8:
         errors.append("Password should contain at least 8 characters.")
@@ -29,9 +30,8 @@ def validation(userpass):
     if not any(c.isdigit() for c in userpass):
         errors.append("Password must contain at least one digit.")
 
-    if not any(not c.isalnum() for c in userpass):
-        errors.append("Password must contain at least one special character.")
-
+    if not any(c in allowedSpecialChar for c in userpass):
+        errors.append(f"Password must contain at least one special character: {', '.join(allowedSpecialChar)}")
     if errors:
         resultlbl.set("\n".join(errors))
     else:
