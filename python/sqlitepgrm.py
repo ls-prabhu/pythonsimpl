@@ -1,12 +1,25 @@
 import sqlite3
 
 conn = sqlite3.connect("student.db")
+def leaveSpaces():
+    for i in range(15):
+        print()
 
 
 def insertData(data,cursor,connection):
     inscmd ='''INSERT INTO student (name,age) VALUES (?,?)'''
     cursor.execute(inscmd,data)
     connection.commit()
+
+
+def display(cursor):
+    cursor.execute("SELECT * FROM student")
+    rows = cursor.fetchall()
+    leaveSpaces()
+    for row in rows:
+        print(row)
+
+
 
 cur = conn.cursor()
 
@@ -19,17 +32,13 @@ cur.execute(cmd1)
 conn.commit()
 
 
+while True:
+    choice = int(input(('1. insert data\n2. show all data\n\nenter your choice : ')))
 
-# Insert a new student
-insertData(("prabhu",21),cur,conn)
-insertData(("arun",21),cur,conn)
-insertData(("ram",21),cur,conn)
-
-
-cur.execute("SELECT * FROM student")
-rows = cur.fetchall()
-for row in rows:
-    print(row)
-
-conn.close()
-
+    if(choice==1):
+        name = input('enter name: ')
+        age = int(input("enter age : "))
+        insertData((name,age),cur,conn)
+        leaveSpaces()
+    elif(choice==2):
+        display(cur)
